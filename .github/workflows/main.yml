@@ -17,7 +17,7 @@ jobs:
       - name: Publish image to docker hub
         run: docker push madhuraonline/nodejs-notes-app:latest
       - name: Start the Runner
-        run: ./run.sh
+        run: /home/ubuntu/run.sh
         
   deploy:
     needs: build
