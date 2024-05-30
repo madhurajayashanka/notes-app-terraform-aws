@@ -190,6 +190,7 @@ resource "aws_db_instance" "postgresql" {
   publicly_accessible     = false
   db_subnet_group_name    = aws_db_subnet_group.postgresql_subnet_group.name
   vpc_security_group_ids  = [aws_security_group.rds_sg.id]
+  final_snapshot_identifier = "notes-db-snapshot"
 }
 
 # EC2 Instance in Public Subnet
