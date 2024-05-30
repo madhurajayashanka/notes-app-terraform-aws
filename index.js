@@ -67,7 +67,7 @@ app.get('/', (req, res) => {
  *           schema:
  *             type: object
  *             properties:
- *               // Define your request body properties here
+ *               // Define your request  body properties here
  *     responses:
  *       '200':
  *         description: Item created successfully.
