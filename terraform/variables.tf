@@ -7,6 +7,7 @@ variable "subnet_availability_zone_1" {
   default = "us-east-1a"
 }
 
+
 variable "subnet_availability_zone_2" {
   default = "us-east-1b"
 }
