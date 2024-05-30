@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: [ubuntu-20.04]
+    runs-on: [ubuntu-22.04]
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
@@ -19,11 +19,13 @@ jobs:
         
   deploy:
     needs: build
-    runs-on: [aws-ec2]
+    runs-on: ubuntu-latest
     steps:
-      - name: Pull image from docker hub
+      - name: Pull image from Docker Hub
         run: docker pull madhuraonline/nodejs-notes-app:latest
-      - name: Delete old container
-        run: docker rm -f nodejs-notes-app-container
-      - name: Run docker container
-        run: docker run -d -p 5000:5000 --name nodejs-notes-app-container madhuraonline/nodejs-notes-app
+      
+      - name: Stop and remove old container
+        run: docker stop nodejs-notes-app-container && docker rm nodejs-notes-app-container || true
+      
+      - name: Run Docker container
+        run: docker run -d -p 5000:5000 --name nodejs-notes-app-container madhuraonline/nodejs-notes-app:latest
