@@ -27,3 +27,8 @@ tmp/
 # OS or Editor temporary files
 .DS_Store
 Thumbs.db
+
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
