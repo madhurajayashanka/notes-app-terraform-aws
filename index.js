@@ -51,7 +51,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  *         description: A welcome message.
  */
 app.get('/', (req, res) => {
-    res.send('Testing 2 Welcome to the CRUD Express.js App!');
+    res.send('Testing 2 Welcome to the CRUD Express.JS App!');
 });
 
 /**
