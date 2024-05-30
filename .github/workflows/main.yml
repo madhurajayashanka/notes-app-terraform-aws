@@ -8,6 +8,10 @@ jobs:
   build:
     runs-on: [ubuntu-22.04]
     steps:
+      - name: pwd location
+        run: pwd
+      - name: listing
+        run:  ls
       - name: Checkout source
         uses: actions/checkout@v3
       - name: Login to docker hub
@@ -19,11 +23,11 @@ jobs:
       - name: pwd location
         run: pwd
       - name: listing
-        run: ls
+        run:  ls
       - name: Set execute permissions for run.sh
-        run: chmod +x /home/ubuntu/run.sh
+        run: chmod +x /root/actions-runner/run.sh
       - name: Start the Runner
-        run: /home/ubuntu/run.sh
+        run: /root/actions-runner/run.sh
         
   deploy:
     needs: build
