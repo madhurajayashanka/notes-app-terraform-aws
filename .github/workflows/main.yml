@@ -6,17 +6,28 @@ on:
 
 jobs:
   build:
-    runs-on: [ubuntu-22.04]
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
       - name: Login to docker hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build docker image
-        run: docker build -t madhuraonline/nodejs-notes-app .
+        run: |
+          docker build \
+          --build-arg AWS_REGION=${{ secrets.AWS_REGION }} \
+          --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+          --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+          --build-arg DYNAMODB_TABLE_NAME=${{ secrets.DYNAMODB_TABLE_NAME }} \
+          --build-arg RDS_INSTANCE_IDENTIFIER=${{ secrets.RDS_INSTANCE_IDENTIFIER }} \
+          --build-arg RDS_DB_NAME=${{ secrets.RDS_DB_NAME }} \
+          --build-arg RDS_USERNAME=${{ secrets.RDS_USERNAME }} \
+          --build-arg RDS_PASSWORD=${{ secrets.RDS_PASSWORD }} \
+          --build-arg S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }} \
+          -t madhuraonline/nodejs-notes-app .
       - name: Publish image to docker hub
         run: docker push madhuraonline/nodejs-notes-app:latest
-        
+
   deploy:
     needs: build
     runs-on: self-hosted
@@ -26,4 +37,16 @@ jobs:
       - name: Delete old container
         run: docker rm -f nodejs-notes-app-container
       - name: Run docker container
-        run: docker run -d -p 5000:5000 --name nodejs-notes-app-container madhuraonline/nodejs-notes-app
+        run: |
+          docker run -d -p 5000:5000 \
+          --name nodejs-notes-app-container \
+          -e AWS_REGION=${{ secrets.AWS_REGION }} \
+          -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+          -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+          -e DYNAMODB_TABLE_NAME=${{ secrets.DYNAMODB_TABLE_NAME }} \
+          -e RDS_INSTANCE_IDENTIFIER=${{ secrets.RDS_INSTANCE_IDENTIFIER }} \
+          -e RDS_DB_NAME=${{ secrets.RDS_DB_NAME }} \
+          -e RDS_USERNAME=${{ secrets.RDS_USERNAME }} \
+          -e RDS_PASSWORD=${{ secrets.RDS_PASSWORD }} \
+          -e S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }} \
+          madhuraonline/nodejs-notes-app
