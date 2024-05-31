@@ -42,6 +42,3 @@ variable "ec2_ami" {
   default = "ami-04b70fa74e45c3917" # Amazon Ubuntu 24.04 LTS
 }
 
-variable "key_name" {
-  default = "/Users/madhura/Downloads/portfolio"
-}
